@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 
 // Components
+import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
 import SOSCenter from './pages/SOSCenter';
 import DriverManagement from './pages/DriverManagement';
@@ -30,12 +31,12 @@ const Sidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
   const location = useLocation();
   
   const navItems = [
-    { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/drivers', icon: Users, label: 'Fleet Personnel' },
-    { path: '/vehicles', icon: Car, label: 'Asset Registry' },
-    { path: '/trips', icon: Navigation, label: 'Operations' },
-    { path: '/sos', icon: AlertOctagon, label: 'Emergency Hub' },
-    { path: '/payouts', icon: Wallet, label: 'Financials' },
+    { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/admin/drivers', icon: Users, label: 'Fleet Personnel' },
+    { path: '/admin/vehicles', icon: Car, label: 'Asset Registry' },
+    { path: '/admin/trips', icon: Navigation, label: 'Operations' },
+    { path: '/admin/sos', icon: AlertOctagon, label: 'Emergency Hub' },
+    { path: '/admin/payouts', icon: Wallet, label: 'Financials' },
   ];
 
   return (
@@ -50,11 +51,11 @@ const Sidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
       <div className="mb-16 gsap-reveal">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-8 h-8 bg-primary flex items-center justify-center rounded-lg">
-            <Car className="text-white w-5 h-5" />
+            <img src="/Pico Cabs- icon.png" alt="Pico Cabs Icon" className="w-5 h-5 object-contain" />
           </div>
           <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-secondary/60">OPERATIONS V.01</span>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-primary italic">Cab Page</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-primary italic">Pico Cabs</h1>
       </div>
 
       <nav className="flex-1 space-y-1">
@@ -78,9 +79,9 @@ const Sidebar = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) 
       </nav>
 
       <Link 
-        to="/account"
+        to="/admin/account"
         className={`mt-auto pt-6 border-t border-border gsap-reveal group transition-all ${
-          location.pathname === '/account' ? 'opacity-100' : 'opacity-60 hover:opacity-100'
+          location.pathname === '/admin/account' ? 'opacity-100' : 'opacity-60 hover:opacity-100'
         }`}
       >
         <div className="flex items-center gap-3">
@@ -158,9 +159,9 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
   const steps = [
     'BOOT SEQUENCE INITIATED',
     'CONNECTING TO INDIA NODE SOUTH 01...',
-    'AUTHENTICATING ADMIN CREDENTIALS...',
+    'ESTABLISHING SECURE CONNECTION...',
     'SYNCING REAL TIME FLEET DATA...',
-    'DECRYPTING FINANCIAL LEDGERS...',
+    'INITIALIZING CAB NETWORK...',
     'SYSTEM READY'
   ];
 
@@ -217,7 +218,7 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
         <div className="relative mb-16 py-6 flex items-center justify-between border-b border-white/10 pb-8">
           {/* Title - Left Aligned */}
           <span ref={textRef} className="text-white font-bold italic text-4xl tracking-tighter relative z-10">
-            Cab Page
+            Pico Cabs
           </span>
 
           {/* Docking Car Unit - Right Aligned */}
@@ -227,7 +228,7 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
           >
             <div className="w-14 h-14 border border-white/20 flex items-center justify-center relative rounded-2xl bg-white/5 backdrop-blur-sm shadow-[0_0_30px_rgba(255,255,255,0.05)]">
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl" />
-              <Car className="text-white w-7 h-7 relative z-10" />
+              <img src="/Pico Cabs- icon.png" alt="Pico Cabs Icon" className="w-7 h-7 relative z-10 object-contain" />
               
               {/* Subtle highlight effect */}
               <div className="absolute inset-0 bg-white/5 animate-pulse rounded-2xl" />
@@ -256,42 +257,34 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
   );
 };
 
-const App = () => {
+const AdminApp = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isArchiveOpen, setIsArchiveOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
-      // Sharp European-style entrance
-      gsap.fromTo('.gsap-reveal', 
-        { opacity: 0, y: 30 },
-        { 
-          opacity: 1, 
-          y: 0, 
-          stagger: 0.05, 
-          duration: 1.2, 
-          ease: 'expo.out',
-          delay: 0.2
-        }
-      );
-
-      // Trigger Auth Modal on entry if not authenticated
-      if (!isAuthenticated) {
-        setIsAuthModalOpen(true);
+    // Sharp European-style entrance
+    gsap.fromTo('.gsap-reveal', 
+      { opacity: 0, y: 30 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        stagger: 0.05, 
+        duration: 1.2, 
+        ease: 'expo.out',
+        delay: 0.2
       }
-    }
-  }, [isLoading, isAuthenticated]);
+    );
 
-  if (isLoading) {
-    return <Preloader onComplete={() => setIsLoading(false)} />;
-  }
+    // Trigger Auth Modal on entry if not authenticated
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+    }
+  }, [isAuthenticated]);
 
   return (
-    <Router>
       <div className="min-h-screen bg-background text-primary selection:bg-primary/10 selection:text-primary relative overflow-hidden">
         {isAuthenticated ? (
           <>
@@ -345,7 +338,7 @@ const App = () => {
               
               <div className="relative z-10">
                 <div className="w-16 h-16 bg-primary flex items-center justify-center mx-auto mb-10 shadow-xl group transition-transform hover:scale-105 rounded-2xl">
-                  <Car className="text-white w-8 h-8" />
+                  <img src="/Pico Cabs- icon.png" alt="Pico Cabs Icon" className="w-8 h-8 object-contain" />
                 </div>
                 <div className="space-y-4">
                   <h1 className="text-4xl sm:text-6xl font-serif italic font-bold tracking-tighter text-black">Secure Gateway</h1>
@@ -379,6 +372,22 @@ const App = () => {
           </div>
         )}
       </div>
+  );
+};
+
+const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  if (isLoading) {
+    return <Preloader onComplete={() => setIsLoading(false)} />;
+  }
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/admin/*" element={<AdminApp />} />
+      </Routes>
     </Router>
   );
 };

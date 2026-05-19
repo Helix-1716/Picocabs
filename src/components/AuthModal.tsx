@@ -74,7 +74,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onSuccess }) => 
         <div className="p-10 border-b border-black/5 relative">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 bg-black flex items-center justify-center">
-              <Car className="text-ivory w-6 h-6" />
+              <img src="/Pico Cabs- icon.png" alt="Pico Cabs Icon" className="w-6 h-6 object-contain" />
             </div>
             <span className="text-[10px] font-mono font-bold tracking-[0.3em] text-black/30">SECURE ACCESS HUB</span>
           </div>
